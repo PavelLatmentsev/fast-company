@@ -15,7 +15,7 @@ const SearchStatus = ({ users, count }) => {
             <div>
                 <h2>
                     <span className="badge bg-danger">
-                        Никто с тобой не тусанет сегодня!
+                        Никто с тобой не тусанет сегодня.
                     </span>
                 </h2>
             </div>
