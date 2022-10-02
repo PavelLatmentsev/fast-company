@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Users from "./components/users";
-import api from "./api";
-import SearchStatus from "./components/searchStatus";
+import API from "./api/index";
 
 const App = () => {
-    const [users, setUsers] = useState(api.users.fetchAll());
+    const [users, setUsers] = useState([]);
     const [count, setCount] = useState(users.length);
+    useEffect(() => {
+        API.users.fetchAll().then(resolve => setUsers(resolve));
+    });
+
     const getDeleteRow = (id) => {
         setUsers((prevState) => prevState.filter((user) => user._id !== id));
         setCount(count - 1);
@@ -24,13 +27,14 @@ const App = () => {
 
     return (
         <div>
-            <SearchStatus users={users} count={count} />
             <Users
                 onGetDeleteRow={getDeleteRow}
                 users={users}
                 onHeandleToggleBookmark={heandleToggleBookmark}
+                count={count}
             />
         </div>
     );
 };
+
 export default App;
