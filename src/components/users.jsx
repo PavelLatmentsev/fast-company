@@ -31,7 +31,7 @@ const Users = () => {
         setUsers(newBox);
     };
 
-    const pageSize = 2;
+    const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessons] = useState(API.professions.fetchAll());
     const [selectedProf, setSelectedProf] = useState();
@@ -108,7 +108,6 @@ const Users = () => {
             </div>
         );
     }
-    return "Loading...";
 };
 
 Users.propTypes = {
