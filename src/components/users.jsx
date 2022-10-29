@@ -11,6 +11,7 @@ import _ from "lodash";
 const Users = () => {
     const [users, setUsers] = useState([]);
     let [count, setCount] = useState(users.length);
+    const [searchValue, setSearchValue] = useState("");
     useEffect(() => {
         API.users.fetchAll().then((resolve) => setUsers(resolve));
     }, []);
@@ -30,6 +31,10 @@ const Users = () => {
 
         setUsers(newBox);
     };
+    const heandleSearch = ({ target }) => {
+        setSelectedProf(undefined);
+        setSearchValue(target.value);
+    };
 
     const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
@@ -41,8 +46,12 @@ const Users = () => {
     });
     useEffect(() => {
         setCurrentPage(1);
-    }, [selectedProf]);
+    }, [selectedProf, searchValue]);
+
     const heandleGroupList = (item) => {
+        if (searchValue !== "") {
+            setSearchValue("");
+        }
         setSelectedProf(item);
     };
 
@@ -54,9 +63,11 @@ const Users = () => {
         setSortBy(item);
     };
     if (users) {
-        const filterdUsers = selectedProf
-            ? users.filter((user) => _.isEqual(user?.profession, selectedProf))
-            : users;
+        const filterdUsers = searchValue
+            ? users.filter((user) => user.name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1)
+            : selectedProf
+                ? users.filter((user) => _.isEqual(user?.profession, selectedProf))
+                : users;
         count = filterdUsers.length;
         const sortUsers = _.orderBy(
             filterdUsers,
@@ -87,6 +98,9 @@ const Users = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus users={users} count={count} />
+                    <div className="input-group">
+                        <input type="text" name="search" placeholder="Search..." className="form-control" value={searchValue} onChange={heandleSearch} />
+                    </div>
                     {count > 0 && (
                         <UsersTable
                             userCrop={userCrop}
