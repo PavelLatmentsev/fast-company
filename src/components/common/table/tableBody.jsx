@@ -29,9 +29,9 @@ const TableBordy = ({ data, columns }) => {
     );
 };
 
-export default TableBordy;
-
 TableBordy.propTypes = {
     data: PropTypes.array.isRequired,
     columns: PropTypes.object.isRequired
 };
+
+export default TableBordy;

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { paginate } from "../utils/paginate";
-import Pagination from "./pagination";
-import UsersTable from "./usersTable";
+import { paginate } from "../../../utils/paginate";
+import Pagination from "../../common/pagination";
+import UsersTable from "../../ui/usersTable";
 import PropTypes from "prop-types";
-import GroupList from "./groupList";
-import API from "../api";
-import SearchStatus from "./searchStatus";
+import GroupList from "../../common/groupList";
+import API from "../../../api";
+import SearchStatus from "../../ui/searchStatus";
 import _ from "lodash";
 
-const Users = () => {
+const UsersListPage = () => {
     const [users, setUsers] = useState([]);
     let [count, setCount] = useState(users.length);
     const [searchValue, setSearchValue] = useState("");
@@ -64,7 +64,12 @@ const Users = () => {
     };
     if (users) {
         const filterdUsers = searchValue
-            ? users.filter((user) => user.name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1)
+            ? users.filter(
+                (user) =>
+                    user.name
+                        .toLowerCase()
+                        .indexOf(searchValue.toLowerCase()) !== -1
+            )
             : selectedProf
                 ? users.filter((user) => _.isEqual(user?.profession, selectedProf))
                 : users;
@@ -99,7 +104,14 @@ const Users = () => {
                 <div className="d-flex flex-column">
                     <SearchStatus users={users} count={count} />
                     <div className="input-group">
-                        <input type="text" name="search" placeholder="Search..." className="form-control" value={searchValue} onChange={heandleSearch} />
+                        <input
+                            type="text"
+                            name="search"
+                            placeholder="Search..."
+                            className="form-control"
+                            value={searchValue}
+                            onChange={heandleSearch}
+                        />
                     </div>
                     {count > 0 && (
                         <UsersTable
@@ -124,9 +136,9 @@ const Users = () => {
     }
 };
 
-Users.propTypes = {
+UsersListPage.propTypes = {
     users: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     count: PropTypes.number
 };
 
-export default Users;
+export default UsersListPage;
