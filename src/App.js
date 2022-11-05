@@ -13,7 +13,7 @@ const App = () => {
             <Switch>
                 <Route exact path="/" component={Main}/>
                 <Route path="/login/:type?" component={Login}/>
-                <Route path="/users/:userID?" render={(props) => <UsersList {...props}/>}/>
+                <Route path="/users/:userID?/:edit?" render={(props) => <UsersList {...props}/>}/>
             </Switch>
         </div>
 

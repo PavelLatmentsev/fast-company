@@ -14,6 +14,7 @@ const RegistrForm = () => {
         API.professions.fetchAll().then((data) => setProfessions(data));
         API.qualities.fetchAll().then((data) => setQualities(data));
     });
+
     const validatorConfig = {
         email: {
             isRequired: {
@@ -39,7 +40,7 @@ const RegistrForm = () => {
             }
         },
         profession: {
-            isRequired: { message: "Профессия обязательня для заполнения" }
+            isRequired: { message: "Профессия обязательна для заполнения" }
         },
         licence: {
             isRequired: {
@@ -55,7 +56,9 @@ const RegistrForm = () => {
         qualities: [],
         licence: false
     });
+    console.log(data.profession);
     const heandleChange = (target) => {
+        console.log(target);
         if (target) {
             setData((prevState) => ({
                 ...prevState,
@@ -66,14 +69,14 @@ const RegistrForm = () => {
     const [errors, setErrors] = useState({});
     const validate = () => {
         const errors = validator(data, validatorConfig);
+        setErrors(errors);
+        return Object.keys(errors).length === 0;
         // const errors = {};
         // for (const fieldName in data) {
         //     if (data[fieldName].trim() === "") {
         //         errors[fieldName] = `${fieldName} обязательно для заполнения`;
         //     }
         // }
-        setErrors(errors);
-        return Object.keys(errors).length === 0;
     };
     const isValidData = Object.keys(errors).length === 0;
 
@@ -84,7 +87,7 @@ const RegistrForm = () => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        console.log(e);
+        console.log("dd");
     };
     return (
         <form onSubmit={heandlechangeButton}>
@@ -111,7 +114,7 @@ const RegistrForm = () => {
                 error={errors.profession}
                 value={data.profession}
                 label={"Выбери свою профессию"}
-                name="professions"
+                name="profession"
             />
             <RadioField
                 name={"sex"}

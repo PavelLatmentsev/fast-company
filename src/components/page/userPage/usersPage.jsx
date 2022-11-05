@@ -1,29 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import API from "../../../api/index.js";
 import PropTypes from "prop-types";
+import UserEditPage from "../userEditPage/userEditPage.jsx";
 
 const UsersPage = ({ userID }) => {
     const history = useHistory();
-    const [userFind, setUserFind] = useState();
+    const params = useParams();
+    const { edit } = params;
+    const [user, setUser] = useState();
     useEffect(() => {
-        API.users.getById(userID).then((resolve) => {
-            setUserFind(resolve);
+        API.users.getById(userID).then((data) => {
+            setUser(data);
         });
-    }, []);
+    }, [user]);
 
-    const heandleReturnBack = () => {
-        history.replace("/users");
+    const handleToEdit = () => {
+        history.push("/users/" + userID + "/edit");
     };
-    if (userFind) {
+    if (user) {
         return (
             <>
-                {
+                { edit ? (<div>
+                    <UserEditPage userID={userID} />
+                </div>) : (
                     <div>
-                        <h1>{userFind.name}</h1>
-                        <h2>Профессия:{userFind.profession.name}</h2>
+                        <h1>{user.name}</h1>
+                        <h2>Профессия:{user.profession.name}</h2>
                         <span>
-                            {userFind.qualities.map((item) => (
+                            {user.qualities.map((item) => (
                                 <span
                                     key={item._id}
                                     className={"badge m-2 bg-" + item.color}
@@ -33,16 +39,16 @@ const UsersPage = ({ userID }) => {
                                 </span>
                             ))}
                         </span>
-                        <div>Встреч:{userFind.completedMeetings}</div>
-                        <h1>Rate:{userFind.rate}</h1>
+                        <div>Встреч:{user.completedMeetings}</div>
+                        <h1>Rate:{user.rate}</h1>
+                        <button className="btn btn-warning" onClick={() => handleToEdit()}
+                        >
+                        Изменить
+                        </button>
                     </div>
-                }
-                <button
-                    className="btn btn-warning"
-                    onClick={() => heandleReturnBack()}
-                >
-                    Назад
-                </button>
+
+                )}
+
             </>
         );
     } else {
@@ -51,7 +57,7 @@ const UsersPage = ({ userID }) => {
 };
 
 UsersPage.propTypes = {
-    userID: PropTypes.string.isRequired
+    userID: PropTypes.string
 };
 
 export default UsersPage;
