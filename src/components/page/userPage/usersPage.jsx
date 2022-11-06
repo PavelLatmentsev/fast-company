@@ -9,27 +9,27 @@ const UsersPage = ({ userID }) => {
     const history = useHistory();
     const params = useParams();
     const { edit } = params;
-    const [user, setUser] = useState();
+    const [userData, setUser] = useState();
     useEffect(() => {
         API.users.getById(userID).then((data) => {
             setUser(data);
         });
-    }, [user]);
+    }, [userData]);
 
     const handleToEdit = () => {
         history.push("/users/" + userID + "/edit");
     };
-    if (user) {
+    if (userData) {
         return (
             <>
                 { edit ? (<div>
                     <UserEditPage userID={userID} />
                 </div>) : (
                     <div>
-                        <h1>{user.name}</h1>
-                        <h2>Профессия:{user.profession.name}</h2>
+                        <h1>{userData.name}</h1>
+                        <h2>Профессия:{userData.profession.name}</h2>
                         <span>
-                            {user.qualities.map((item) => (
+                            {userData.qualities.map((item) => (
                                 <span
                                     key={item._id}
                                     className={"badge m-2 bg-" + item.color}
@@ -39,8 +39,8 @@ const UsersPage = ({ userID }) => {
                                 </span>
                             ))}
                         </span>
-                        <div>Встреч:{user.completedMeetings}</div>
-                        <h1>Rate:{user.rate}</h1>
+                        <div>Встреч:{userData.completedMeetings}</div>
+                        <h1>Rate:{userData.rate}</h1>
                         <button className="btn btn-warning" onClick={() => handleToEdit()}
                         >
                         Изменить

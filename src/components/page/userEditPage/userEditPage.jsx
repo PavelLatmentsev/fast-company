@@ -42,19 +42,22 @@ const UserEditPage = ({ userID }) => {
     }, []);
 
     const validatorConfig = {
+        name: {
+            isRequired: {
+                message: "Имя обязателено для заполнения"
+            }
+        },
         email: {
             isRequired: {
                 message: "Электронная почта обязательна для заполнения"
             },
             isEmail: { message: "Email введен не корректно" }
         },
-        name: {
-            isRequired: {
-                message: "Имя обязателено для заполнения"
-            }
-        },
         profession: {
             isRequired: { message: "Профессия обязательна для заполнения" }
+        },
+        sex: {
+            isRequired: { message: "Укажите ваш пол" }
         }
     };
 
@@ -84,7 +87,6 @@ const UserEditPage = ({ userID }) => {
     useEffect(() => {
         validate(userData);
     }, [userData]);
-
     const heandlechangeButton = (e) => {
         e.preventDefault();
         const isValid = validate();
@@ -116,7 +118,7 @@ const UserEditPage = ({ userID }) => {
                                     type="text"
                                     label="Имя"
                                     onChange={heandleChange}
-                                    name="nameUser"
+                                    name="name"
                                     value={userData.name}
                                     error={errors.name}
                                 />
@@ -154,6 +156,7 @@ const UserEditPage = ({ userID }) => {
                                     name="qualities"
                                     label="Выберете ваши качества"
                                     defaultValue={userData.qualities}
+                                    error={errors.sex}
                                 />
 
                                 <button

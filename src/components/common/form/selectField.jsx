@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const SelectField = ({ label, value, onChange, defaultOption, options, error, name }) => {
-    console.log(value, name, error);
     const getInputClasses = () => {
         return "form-select" + (error ? " is-invalid" : "");
     };
@@ -10,7 +9,7 @@ const SelectField = ({ label, value, onChange, defaultOption, options, error, na
         ? Object.keys(options).map((optionName) => ({ name: options[optionName].name, value: options[optionName]._id })) : options;
 
     const heandleChange = ({ target }) => {
-        console.log(onChange({ name: target.name, value: target.value }));
+        onChange({ name: target.name, value: target.value });
     };
     return (
         <div>

@@ -1,37 +1,41 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const RadioField = ({ options, value, onChange, name, label }) => {
+const RadioField = ({ options, value, onChange, name, label, error }) => {
     const heandleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
     return (
         <div className="mb-4">
             <label className="form-label">{label}</label>
-            <div>           {options.map((option) => (
-                <div
-                    key={option.name + "_" + option.value}
-                    className="form-check form-check-inline"
-                >
-                    <input
-                        className="form-check-input"
-                        type="radio"
-                        name={name}
-                        id={option.name + "_" + option.value}
-                        checked={option.value === value}
-                        value={option.value}
-                        onChange={heandleChange}
-                    />
-
-                    <label
-                        className="form-check-label"
-                        htmlFor={option.name + "_" + option.value}
+            <div>
+                {" "}
+                {options.map((option) => (
+                    <div
+                        key={option.name + "_" + option.value}
+                        className="form-check form-check-inline"
                     >
-                        {option.name}
-                    </label>
-                </div>
-            ))}</div>
+                        <input
+                            className="form-check-input"
+                            type="radio"
+                            name={name}
+                            id={option.name + "_" + option.value}
+                            checked={option.value === value}
+                            value={option.value}
+                            onChange={heandleChange}
+                        />
 
+                        <label
+                            className="form-check-label"
+                            htmlFor={option.name + "_" + option.value}
+                        >
+                            {option.name}
+                        </label>
+                    </div>
+
+                ))}
+                {error && <div className="invalid-feedback">{error}</div>}
+            </div>
         </div>
     );
 };
@@ -41,7 +45,8 @@ RadioField.propTypes = {
     onChange: PropTypes.func,
     name: PropTypes.string,
     label: PropTypes.string,
-    options: PropTypes.array
+    options: PropTypes.array,
+    error: PropTypes.string
 };
 
 export default RadioField;
