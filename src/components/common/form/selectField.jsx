@@ -1,16 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const SelectField = ({ label, value, onChange, defaultOption, options, error, name }) => {
+const SelectField = ({
+    label,
+    value,
+    onChange,
+    defaultOption,
+    options,
+    error,
+    name
+}) => {
     const getInputClasses = () => {
         return "form-select" + (error ? " is-invalid" : "");
     };
-    const optionsArray = !Array.isArray(options) && typeof options === "object"
-        ? Object.keys(options).map((optionName) => ({ name: options[optionName].name, value: options[optionName]._id })) : options;
+    const optionsArray =
+        !Array.isArray(options) && typeof options === "object"
+            ? Object.keys(options).map((optionName) => ({
+                name: options[optionName].name,
+                value: options[optionName]._id
+            }))
+            : options;
 
     const heandleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
+
     return (
         <div>
             <div className="mb-4">
@@ -29,14 +43,15 @@ const SelectField = ({ label, value, onChange, defaultOption, options, error, na
                     </option>
                     {optionsArray &&
                         optionsArray.map((option) => (
-                            <option value={option.value} key={option.value + " " + option.name }>
+                            <option
+                                value={option.value}
+                                key={option.value + " " + option.name}
+                            >
                                 {option.name}
                             </option>
                         ))}
                 </select>
-                {error && <div className="invalid-feedback">
-                    {error}
-                </div>}
+                {error && <div className="invalid-feedback">{error}</div>}
             </div>
         </div>
     );
