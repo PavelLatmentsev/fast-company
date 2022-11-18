@@ -21,6 +21,7 @@ const CommentsList = ({ commentsUser, onRemove }) => {
         </div>
     );
 };
+
 CommentsList.propTypes = {
     commentsUser: PropTypes.array.isRequired,
     onRemove: PropTypes.func.isRequired
