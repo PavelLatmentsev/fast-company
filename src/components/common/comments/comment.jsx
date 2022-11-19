@@ -4,15 +4,21 @@ import PropTypes from "prop-types";
 import { displayDate } from "../../../utils/displayDate";
 const Comment = ({ userID, content, created_at: created, onRemove, _id: id }) => {
     const [user, setUser] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        API.users.getById(userID).then((data) => setUser(data));
+        setIsLoading(true);
+        API.users.getById(userID).then((data) => {
+            setUser(data);
+            setIsLoading(false);
+        });
     }, []);
     return (
-        <div>
-            <div className="bg-light card-body  mb-3">
-                <div className="row">
-                    <div className="col">
+
+        <div className="bg-light card-body  mb-3">
+            <div className="row">
+                {isLoading ? ("Loading...")
+                    : (<div className="col">
                         <div className="d-flex flex-start ">
                             <img
                                 src={`https://avatars.dicebear.com/api/avataaars/${(
@@ -44,8 +50,7 @@ const Comment = ({ userID, content, created_at: created, onRemove, _id: id }) =>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div>)}
             </div>
         </div>
     );
