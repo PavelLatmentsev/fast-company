@@ -56,25 +56,3 @@ UsersPage.propTypes = {
 };
 
 export default UsersPage;
-
-// <div>
-//     <h1>{userData.name}</h1>
-//     <h2>Профессия:{userData.profession.name}</h2>
-//     <span>
-//         {userData.qualities.map((item) => (
-//             <span
-//                 key={item._id}
-//                 className={"badge m-2 bg-" + item.color}
-//             >
-//                 {" "}
-//                 {item.name}{" "}
-//             </span>
-//         ))}
-//     </span>
-//     <div>Встреч:{userData.completedMeetings}</div>
-//     <h1>Rate:{userData.rate}</h1>
-//     <button className="btn btn-warning" onClick={() => handleToEdit()}
-//     >
-//     Изменить
-//     </button>
-// </div>
