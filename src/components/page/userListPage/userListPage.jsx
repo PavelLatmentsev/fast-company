@@ -31,6 +31,7 @@ const UsersListPage = () => {
 
         setUsers(newBox);
     };
+
     const heandleSearch = ({ target }) => {
         setSelectedProf(undefined);
         setSearchValue(target.value);
@@ -44,6 +45,7 @@ const UsersListPage = () => {
     useEffect(() => {
         API.professions.fetchAll().then((data) => setProfessons(data));
     });
+
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedProf, searchValue]);
@@ -58,21 +60,22 @@ const UsersListPage = () => {
     const heandlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
+
     const heandleSort = (item) => {
-        console.log(item);
         setSortBy(item);
     };
+
     if (users) {
         const filterdUsers = searchValue
             ? users.filter(
-                (user) =>
-                    user.name
-                        .toLowerCase()
-                        .indexOf(searchValue.toLowerCase()) !== -1
-            )
+                  (user) =>
+                      user.name
+                          .toLowerCase()
+                          .indexOf(searchValue.toLowerCase()) !== -1
+              )
             : selectedProf
-                ? users.filter((user) => _.isEqual(user?.profession, selectedProf))
-                : users;
+            ? users.filter((user) => _.isEqual(user?.profession, selectedProf))
+            : users;
         count = filterdUsers.length;
         const sortUsers = _.orderBy(
             filterdUsers,
@@ -133,9 +136,12 @@ const UsersListPage = () => {
                 </div>
             </div>
         );
-    } else {
-        return "Loading...";
     }
+    return (
+        <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+        </div>
+    );
 };
 
 UsersListPage.propTypes = {
