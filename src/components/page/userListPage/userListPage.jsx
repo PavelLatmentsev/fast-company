@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { paginate } from "../../../utils/paginate";
-import Pagination from "../../common/pagination";
-import UsersTable from "../../ui/usersTable";
-import PropTypes from "prop-types";
-import GroupList from "../../common/groupList";
-import API from "../../../api";
-import SearchStatus from "../../ui/searchStatus";
 import _ from "lodash";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import API from "../../../api";
+import { paginate } from "../../../utils/paginate";
+import GroupList from "../../common/groupList";
+import Pagination from "../../common/pagination";
+import SearchStatus from "../../ui/searchStatus";
+import UsersTable from "../../ui/usersTable";
 
 const UsersListPage = () => {
     const [users, setUsers] = useState([]);
@@ -133,8 +133,9 @@ const UsersListPage = () => {
                 </div>
             </div>
         );
+    } else {
+        return "Loading...";
     }
-    return "Loading...";
 };
 
 UsersListPage.propTypes = {

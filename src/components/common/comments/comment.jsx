@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import API from "../../../api";
 import PropTypes from "prop-types";
 import { displayDate } from "../../../utils/displayDate";
-const Comment = ({ userID, content, created_at: created, onRemove, _id: id }) => {
+const Comment = ({
+    userID,
+    content,
+    created_at: created,
+    onRemove,
+    _id: id
+}) => {
     const [user, setUser] = useState();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -14,11 +20,14 @@ const Comment = ({ userID, content, created_at: created, onRemove, _id: id }) =>
         });
     }, []);
     return (
-
         <div className="bg-light card-body  mb-3">
             <div className="row">
-                {isLoading ? ("Loading...")
-                    : (<div className="col">
+                {isLoading ? (
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                ) : (
+                    <div className="col">
                         <div className="d-flex flex-start ">
                             <img
                                 src={`https://avatars.dicebear.com/api/avataaars/${(
@@ -40,17 +49,19 @@ const Comment = ({ userID, content, created_at: created, onRemove, _id: id }) =>
                                                 {displayDate(created)}
                                             </span>
                                         </p>
-                                        <button className="btn btn-sm text-primary d-flex align-items-center" onClick={() => onRemove(id)}>
+                                        <button
+                                            className="btn btn-sm text-primary d-flex align-items-center"
+                                            onClick={() => onRemove(id)}
+                                        >
                                             <i className="bi bi-x-lg"></i>
                                         </button>
                                     </div>
-                                    <p className="small mb-0">
-                                        {content}
-                                    </p>
+                                    <p className="small mb-0">{content}</p>
                                 </div>
                             </div>
                         </div>
-                    </div>)}
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -61,6 +72,5 @@ Comment.propTypes = {
     created_at: PropTypes.number,
     onRemove: PropTypes.func,
     _id: PropTypes.string
-
 };
 export default Comment;
