@@ -7,17 +7,15 @@ import GroupList from "../../common/groupList";
 import Pagination from "../../common/pagination";
 import SearchStatus from "../../ui/searchStatus";
 import UsersTable from "../../ui/usersTable";
+import { useUser } from "../../../hooks/useUsers";
 
 const UsersListPage = () => {
-    const [users, setUsers] = useState([]);
+    const { users } = useUser();
     let [count, setCount] = useState(users.length);
     const [searchValue, setSearchValue] = useState("");
-    useEffect(() => {
-        API.users.fetchAll().then((resolve) => setUsers(resolve));
-    }, []);
 
     const getDeleteRow = (id) => {
-        setUsers((prevState) => prevState.filter((user) => user._id !== id));
+        // setUsers((prevState) => prevState.filter((user) => user._id !== id));
         setCount(count - 1);
     };
 
@@ -28,8 +26,8 @@ const UsersListPage = () => {
             }
             return item;
         });
-
-        setUsers(newBox);
+        console.log(newBox);
+        // setUsers(newBox);
     };
 
     const heandleSearch = ({ target }) => {
