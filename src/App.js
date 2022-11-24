@@ -15,10 +15,10 @@ const App = () => {
             <ProfessionProvider>
             <Switch>
                 <Route exact path="/" component={Main}/>
+                 <Route path="/login/:type?" component={Login}/>
                 <QulitiesProvider>
                 <Route path="/users/:userID?/:edit?" render={(props) => <UsersList {...props}/>}/>
                 </QulitiesProvider>
-                <Route path="/login/:type?" component={Login}/>
             </Switch>
             </ProfessionProvider>
            <ToastContainer/>

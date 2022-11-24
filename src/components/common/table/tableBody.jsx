@@ -12,7 +12,11 @@ const TableBordy = ({ data, columns }) => {
             return componentItem;
         }
         if (columns[column].path === "name") {
-            return <Link to={`/users/${item._id}`}>{_.get(item, columns[column].path)}</Link>;
+            return (
+                <Link to={`/users/${item._id}`}>
+                    {_.get(item, columns[column].path)}
+                </Link>
+            );
         }
         return _.get(item, columns[column].path);
     };

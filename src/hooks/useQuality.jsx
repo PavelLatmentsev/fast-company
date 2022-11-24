@@ -13,7 +13,6 @@ export const QulitiesProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [qulitiesList, setQulitiesList] = useState([]);
     const [error, setError] = useState(null);
-    console.log(qulitiesList);
     useEffect(() => {
         getQuailitiesList();
     }, []);
@@ -24,6 +23,18 @@ export const QulitiesProvider = ({ children }) => {
             setError(null);
         }
     }, [error]);
+
+    const getQualityList = (qulitiesId) => {
+        const quialityNewList = [];
+        for (const qualityId of qulitiesId) {
+            for (const qualityItem of qulitiesList) {
+                if (qualityId === qualityItem._id) {
+                    quialityNewList.push(qualityItem);
+                }
+            }
+        }
+        return quialityNewList;
+    };
 
     async function getQuailitiesList() {
         try {
@@ -40,7 +51,9 @@ export const QulitiesProvider = ({ children }) => {
         setIsLoading(false);
     }
     return (
-        <QualityContext.Provider value={{ qulitiesList, isLoading }}>
+        <QualityContext.Provider
+            value={{ getQualityList, isLoading }}
+        >
             {children}
         </QualityContext.Provider>
     );
