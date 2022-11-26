@@ -12,15 +12,15 @@ const App = () => {
     return (
         <div>
             <Navbar/>
+            <QulitiesProvider>
             <ProfessionProvider>
             <Switch>
                 <Route exact path="/" component={Main}/>
                  <Route path="/login/:type?" component={Login}/>
-                <QulitiesProvider>
                 <Route path="/users/:userID?/:edit?" render={(props) => <UsersList {...props}/>}/>
-                </QulitiesProvider>
             </Switch>
             </ProfessionProvider>
+            </QulitiesProvider>
            <ToastContainer/>
         </div>
 

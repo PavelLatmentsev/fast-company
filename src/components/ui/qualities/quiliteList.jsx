@@ -2,18 +2,15 @@ import React from "react";
 import Quility from "./quilite";
 import PropTypes from "prop-types";
 import { useQuality } from "../../../hooks/useQuality";
-const QuiliteList = ({ user }) => {
-    const { getQualityList, isLoading } = useQuality();
-    const qualityList = getQualityList(user.qualities);
-
-    if (!isLoading) {
-       return qualityList.map((item) => <Quility key={item._id} {...item} />);
-    } else {
-        return "Loading...";
-    }
+const QuiliteList = ({ qualities }) => {
+    const { isLoading } = useQuality();
+    if (isLoading) return "Loading...";
+       return (<>
+       {qualities.map((qual) => <Quility key={qual} id={qual} />)}
+       </>);
 };
 
 QuiliteList.propTypes = {
-    user: PropTypes.object.isRequired
+    qualities: PropTypes.array.isRequired
 };
 export default QuiliteList;

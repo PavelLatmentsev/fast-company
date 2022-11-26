@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import ProfessionService from "../services/profession.service";
+import professionService from "../services/profession.service";
 import { toast } from "react-toastify";
 
 const ProfessionContext = React.createContext();
@@ -34,7 +34,7 @@ export const ProfessionProvider = ({ children }) => {
     }
     async function getProfessionsList() {
         try {
-            const { content } = await ProfessionService.get();
+            const { content } = await professionService.get();
             setProfessions(content);
             setIsLoading(false);
         } catch (error) {

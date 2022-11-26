@@ -1,6 +1,7 @@
+
 import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import QualityService from "../services/quality.service";
+import qualityService from "../services/quality.service";
 import { toast } from "react-toastify";
 
 const QualityContext = React.createContext();
@@ -11,7 +12,7 @@ export const useQuality = () => {
 
 export const QulitiesProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [qulitiesList, setQulitiesList] = useState([]);
+    const [qualities, setQulitiesList] = useState([]);
     const [error, setError] = useState(null);
     useEffect(() => {
         getQuailitiesList();
@@ -24,21 +25,12 @@ export const QulitiesProvider = ({ children }) => {
         }
     }, [error]);
 
-    const getQualityList = (qulitiesId) => {
-        const quialityNewList = [];
-        for (const qualityId of qulitiesId) {
-            for (const qualityItem of qulitiesList) {
-                if (qualityId === qualityItem._id) {
-                    quialityNewList.push(qualityItem);
-                }
-            }
-        }
-        return quialityNewList;
-    };
-
+const getQuality = (id) => {
+   return qualities.find((q) => q._id === id);
+};
     async function getQuailitiesList() {
         try {
-            const { content } = await QualityService.get();
+            const { content } = await qualityService.get();
             setQulitiesList(content);
             setIsLoading(false);
         } catch (error) {
@@ -52,7 +44,7 @@ export const QulitiesProvider = ({ children }) => {
     }
     return (
         <QualityContext.Provider
-            value={{ getQualityList, isLoading }}
+            value={{ getQuality, isLoading, qualities }}
         >
             {children}
         </QualityContext.Provider>
