@@ -81,6 +81,7 @@ const UsersListPage = () => {
             [sortBy.order]
         );
         const userCrop = paginate(sortUsers, currentPage, pageSize);
+        console.log(userCrop);
         const restart = () => {
             setSelectedProf();
         };
