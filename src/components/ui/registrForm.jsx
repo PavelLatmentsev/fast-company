@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import TextField from "../common/form/textField";
 import { validator } from "../../utils/validator";
-import API from "../../api";
 import SelectField from "../common/form/selectField";
 import RadioField from "../common/form/radioField";
 import MultiSelectField from "../common/form/multiSelectField";
 import CheckBoxField from "../common/form/checkBoxField";
+import { useQuality } from "../../hooks/useQuality";
+import { useProfessions } from "../../hooks/useProfession";
+import { useAuth } from "../../hooks/useAuth";
+import { useHistory } from "react-router-dom";
 
 const RegistrForm = () => {
-    const [qualities, setQualities] = useState({});
-    const [professions, setProfessions] = useState();
-    useEffect(() => {
-        API.professions.fetchAll().then((data) => setProfessions(data));
-        API.qualities.fetchAll().then((data) => setQualities(data));
-    });
-
+    const history = useHistory();
+    const { qualities } = useQuality();
+    const { signUp } = useAuth();
+    const qualitiesList = qualities.map((q) => ({ label: q.name, value: q._id }));
+    const { professions } = useProfessions();
+    const professionsList = professions.map((p) => ({ label: p.name, value: p._id }));
     const validatorConfig = {
         email: {
             isRequired: {
@@ -56,7 +58,6 @@ const RegistrForm = () => {
         qualities: [],
         licence: false
     });
-    console.log(data.profession);
     const heandleChange = (target) => {
         console.log(target);
         if (target) {
@@ -83,11 +84,18 @@ const RegistrForm = () => {
     useEffect(() => {
         validate();
     }, [data]);
-    const heandlechangeButton = (e) => {
+
+    const heandlechangeButton = async (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        console.log("dd");
+        const newData = { ...data, qualities: data.qualities.map((q) => ({ q: q.value })) };
+        try {
+            await signUp(newData);
+            history.push("/");
+        } catch (error) {
+            setErrors(error);
+        }
     };
     return (
         <form onSubmit={heandlechangeButton}>
@@ -109,7 +117,7 @@ const RegistrForm = () => {
             />
             <SelectField
                 onChange={heandleChange}
-                options={professions}
+                options={professionsList}
                 defaultOption={"Choose..."}
                 error={errors.profession}
                 value={data.profession}
@@ -128,7 +136,7 @@ const RegistrForm = () => {
                 label="Выберете ваш пол"
             />
             <MultiSelectField
-                options={qualities}
+                options={qualitiesList}
                 onChange={heandleChange}
                 name="qualities"
                 label="Выберете ваши качества"
