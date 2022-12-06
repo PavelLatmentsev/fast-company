@@ -59,7 +59,8 @@ const LoginForm = () => {
     useEffect(() => {
         validate();
     }, [data]);
-    const heandlechangeButton = async (e) => {
+
+    const heandleSubmit = async (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
@@ -72,7 +73,7 @@ const LoginForm = () => {
     };
 
     return (
-        <form onSubmit={heandlechangeButton}>
+        <form onSubmit={heandleSubmit}>
             <TextField
                 type="text"
                 label="Электронная Почта"
