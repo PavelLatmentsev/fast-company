@@ -16,11 +16,10 @@ export const useAuth = () => {
 const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState();
     const [error, setError] = useState(null);
-    async function singIn({ email, password, ...rest }) {
+    async function singIn({ email, password }) {
         const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
         try {
             const { data } = await httpAuth.post(url, { email, password, returnSecureToken: true });
-            console.log(data);
             setTokens(data);
         } catch (error) {
             errorCather(error);
@@ -43,7 +42,6 @@ const AuthProvider = ({ children }) => {
         } catch (error) {
             errorCather(error);
             const { code, message } = error.response.data.error;
-            console.log(code, message);
             if (code === 400) {
                 if (message === "EMAIL_EXISTS") {
                     const errorObject = { email: "Пользователь с таким Email уже существует" };
