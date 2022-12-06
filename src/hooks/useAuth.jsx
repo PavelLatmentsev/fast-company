@@ -16,13 +16,28 @@ export const useAuth = () => {
 const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState();
     const [error, setError] = useState(null);
-
+    async function singIn({ email, password, ...rest }) {
+        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
+        try {
+            const { data } = await httpAuth.post(url, { email, password, returnSecureToken: true });
+            console.log(data);
+            setTokens(data);
+        } catch (error) {
+            errorCather(error);
+            const { code, message } = error.response.data.error;
+            if (code === 400) {
+                if (message === "EMAIL_NOT_FOUND") {
+                    const errorObject = { email: "Пользователь с таким Email не существует" };
+                    throw errorObject;
+                }
+            }
+        }
+    };
     async function signUp({ email, password, ...rest }) {
         // const keyFireBasePrivate = "AIzaSyCI2Rkzkav6Vnc2ViUSSNpOW5tpthe0sj4";
         const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
         try {
             const { data } = await httpAuth.post(url, { email, password, returnSecureToken: true });
-            console.log(data);
             setTokens(data);
             await createUser({ _id: data.localId, email, ...rest });
         } catch (error) {
@@ -59,7 +74,7 @@ const AuthProvider = ({ children }) => {
         setError(message);
     }
     return (
-        <AuthContext.Provider value={{ signUp, currentUser }}>
+        <AuthContext.Provider value={{ signUp, currentUser, singIn }}>
             {children}
         </AuthContext.Provider>
     );
