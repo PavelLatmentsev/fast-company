@@ -5,7 +5,12 @@ import userService from "../services/user.service";
 import { toast } from "react-toastify";
 import { setTokens } from "../services/localStorage.service";
 
-const httpAuth = axios.create();
+const httpAuth = axios.create({
+    baseURL: "https://identitytoolkit.googleapis.com/v1/",
+    params: {
+        key: process.env.REACT_APP_FIREBASE_KEY
+    }
+});
 console.log("httpAuth", httpAuth);
 const AuthContext = React.createContext();
 
@@ -17,31 +22,28 @@ const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState();
     const [error, setError] = useState(null);
     async function singIn({ email, password }) {
-        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
         try {
-            const { data } = await httpAuth.post(url, { email, password, returnSecureToken: true });
+            const { data } = await httpAuth.post(`accounts:signInWithPassword`, { email, password, returnSecureToken: true });
             setTokens(data);
         } catch (error) {
             errorCather(error);
             const { code, message } = error.response.data.error;
             console.log(code, message);
             if (code === 400) {
-                if (message === "EMAIL_NOT_FOUND") {
-                    const errorObject = { email: "Пользователь с таким Email не существует" };
-                    throw errorObject;
-                }
-                if (message === "INVALID_PASSWORD") {
-                    const errorObject = { password: "Введен не правильный пароль" };
-                    throw errorObject;
+                switch (message) {
+                    case "INVALID_PASSWORD":
+                        throw new Error("Email или пароль введены не правильно");
+
+                    default:
+                        throw new Error("Слишком много попыток входа, попробуйте позже");
                 }
             }
         }
     };
     async function signUp({ email, password, ...rest }) {
         // const keyFireBasePrivate = "AIzaSyCI2Rkzkav6Vnc2ViUSSNpOW5tpthe0sj4";
-        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
         try {
-            const { data } = await httpAuth.post(url, { email, password, returnSecureToken: true });
+            const { data } = await httpAuth.post(`accounts:signUp`, { email, password, returnSecureToken: true });
             setTokens(data);
             await createUser({ _id: data.localId, email, ...rest });
         } catch (error) {
