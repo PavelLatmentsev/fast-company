@@ -3,10 +3,8 @@ import PropTypes from "prop-types";
 import { useQuality } from "../../../hooks/useQuality";
 
 const Quility = ({ id }) => {
-    console.log(id);
     const { getQuality } = useQuality();
-    const { color, name } = getQuality(id);
-    console.log(color, name);
+    const { color, name } = getQuality(id.q);
     return (
         <>
             <span className={`badge m-1 bg-${color}`}>

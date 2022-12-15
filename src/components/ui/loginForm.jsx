@@ -6,6 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useHistory } from "react-router-dom";
 const LoginForm = () => {
     const history = useHistory();
+
     const { singIn } = useAuth();
     const [enterError, setEnterError] = useState(null);
 
@@ -56,7 +57,10 @@ const LoginForm = () => {
         if (!isValid) return;
         try {
             await singIn(data);
-            history.push("/");
+            history.push(
+                history.location.state
+                    ? history.location.state.from.pathname
+                    : "/");
         } catch (error) {
             setErrors(error);
             setEnterError(error.message);

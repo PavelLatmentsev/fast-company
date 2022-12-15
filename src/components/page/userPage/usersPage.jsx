@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import UserCard from "../../ui/userCard.jsx";
 import { useParams } from "react-router-dom";
-import API from "../../../api/index.js";
+// import API from "../../../api/index.js";
 import PropTypes from "prop-types";
 import UserEditPage from "../userEditPage/userEditPage.jsx";
 import QualitiesCard from "../../ui/qualitiesCard";
 import MeteengsCard from "../../ui/meetingsCard.jsx";
 import Comments from "../../ui/comments.jsx";
+import { useUser } from "../../../hooks/useUsers.jsx";
+import { CommentsProvider } from "../../../hooks/useComments.jsx";
 
 const UsersPage = ({ userID }) => {
     const params = useParams();
     const { edit } = params;
-    const [userData, setUser] = useState();
-    useEffect(() => {
-        API.users.getById(userID).then((data) => {
-            setUser(data);
-        });
-    }, []);
+    const { getUserById } = useUser();
+    const userData = getUserById(userID);
+    console.log(userData);
+    // const [userData, setUser] = useState();
+    // useEffect(() => {
+    //     API.users.getById(userID).then((data) => {
+    //         setUser(data);
+    //     });
+    // }, []);
 
     if (userData) {
         return (
@@ -35,7 +40,9 @@ const UsersPage = ({ userID }) => {
                             </div>
 
                             <div className="col-md-8">
-                                <Comments />
+                                <CommentsProvider>
+                                    <Comments />
+                                </CommentsProvider>
                             </div>
                         </div>
                     </div>

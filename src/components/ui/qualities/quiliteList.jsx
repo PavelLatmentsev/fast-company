@@ -3,10 +3,11 @@ import Quility from "./quilite";
 import PropTypes from "prop-types";
 import { useQuality } from "../../../hooks/useQuality";
 const QuiliteList = ({ qualities }) => {
+    console.log(qualities);
     const { isLoading } = useQuality();
     if (isLoading) return "Loading...";
     return (<>
-        {qualities.map((qual) => <Quility key={qual} id={qual} />)}
+        {qualities.map((qual) => <Quility key={qual.q} id={qual} />)}
     </>);
 };
 

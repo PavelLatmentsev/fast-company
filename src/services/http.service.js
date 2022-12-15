@@ -9,7 +9,6 @@ const http = axios.create({ baseURL: configFile.apiEndpoint });
 
 http.interceptors.request.use(
     async function (config) {
-        console.log(config);
         if (configFile.isFireBase) {
             const containSlash = /\/$/gi.test(config.url);
             config.url =
@@ -60,7 +59,6 @@ http.interceptors.response.use(
             error.response.status >= 400 &&
             error.response.status < 500;
         if (!expectedErrors) {
-            console.log(error);
             toast.error(error);
             toast.info("Thomthing was wrong!!! Try it later ");
         }

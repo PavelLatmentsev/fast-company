@@ -1,45 +1,32 @@
 import React, { useEffect, useState } from "react";
 import TextField from "../../common/form/textField";
 import { validator } from "../../../utils/validator";
-import API from "../../../api";
+// import API from "../../../api";
 import SelectField from "../../common/form/selectField";
 import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import BackButton from "../../common/backButton";
+import { useProfessions } from "../../../hooks/useProfession";
+import { useQuality } from "../../../hooks/useQuality";
+import { useAuth } from "../../../hooks/useAuth";
 
 const UserEditPage = ({ userID }) => {
     const history = useHistory();
-    const [qualities, setQualities] = useState({});
-    const [professions, setProfessions] = useState();
+    const { currentUser, updateUserData } = useAuth();
+    const { professions } = useProfessions();
+    const { qualities } = useQuality();
+    console.log(professions);
+    console.log(qualities);
+    console.log(currentUser);
+    // const [qualities, setQualities] = useState({});
+    // const [professions, setProfessions] = useState();
     const [userData, setUserData] = useState();
     const [errors, setErrors] = useState({});
-
-    // const [data, setData] = useState({
-    //     email: "",
-    //     nameUser: "",
-    //     profession: "",
-    //     sex: "male",
-    //     qualities: [],
-    //     licence: false
-    // });
+    console.log("userData", userData);
     useEffect(() => {
-        API.users.getById(userID).then((data) => {
-            data = {
-                ...data,
-                profession: data.profession._id,
-                qualities: data.qualities.map((qualitie) => {
-                    return { label: qualitie.name, value: qualitie._id };
-                })
-            };
-            setUserData(data);
-        });
-    }, []);
-
-    useEffect(() => {
-        API.professions.fetchAll().then((data) => setProfessions(data));
-        API.qualities.fetchAll().then((data) => setQualities(data));
+        setUserData(currentUser);
     }, []);
 
     const validatorConfig = {
@@ -70,6 +57,7 @@ const UserEditPage = ({ userID }) => {
             }));
         }
     };
+
     const validate = (userData) => {
         // const errors = {};
         // for (const fieldName in data) {
@@ -88,6 +76,7 @@ const UserEditPage = ({ userID }) => {
     useEffect(() => {
         validate(userData);
     }, [userData]);
+
     const heandlechangeButton = (e) => {
         e.preventDefault();
         const isValid = validate();
@@ -105,9 +94,12 @@ const UserEditPage = ({ userID }) => {
             profession: professions[professionName],
             qualities: qualitiesList
         };
-        API.users.update(userID, data);
+        console.log("data", data);
+        updateUserData(data);
+        // API.users.update(userID, data);
         history.push("/users/" + userID);
     };
+
     if (userData) {
         return (
             userData && (
@@ -183,3 +175,51 @@ UserEditPage.propTypes = {
 };
 
 export default UserEditPage;
+    // useEffect(() => {
+    //     API.professions.fetchAll().then((data) => setProfessions(data));
+    //     API.qualities.fetchAll().then((data) => setQualities(data));
+    // }, []);
+
+    // const [data, setData] = useState({
+    //     email: "",
+    //     nameUser: "",
+    //     profession: "",
+    //     sex: "male",
+    //     qualities: [],
+    //     licence: false
+    // });
+
+        // useEffect(() => {
+    //     API.users.getById(userID).then((data) => {
+    //         data = {
+    //             ...data,
+    //             profession: data.profession._id,
+    //             qualities: data.qualities.map((qualitie) => {
+    //                 return { label: qualitie.name, value: qualitie._id };
+    //             })
+    //         };
+    //         setUserData(data);
+    //     });
+    // }, []);
+
+    // const heandlechangeButton = (e) => {
+    //     e.preventDefault();
+    //     const isValid = validate();
+    //     if (!isValid) return;
+    //     const professionName = Object.keys(professions).find(
+    //         (key) => professions[key]._id === userData.profession
+    //     );
+    //     const qualitiesList = userData.qualities.map((q) =>
+    //         Object.values(qualities).find(
+    //             (qualitie) => q.value === qualitie._id
+    //         )
+    //     );
+    //     const data = {
+    //         ...userData,
+    //         profession: professions[professionName],
+    //         qualities: qualitiesList
+    //     };
+    //     console.log("data", data);
+    //     API.users.update(userID, data);
+    //     history.push("/users/" + userID);
+    // };
