@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import Quilites from "./qualities";
 const QualitiesCard = ({ data }) => {
-    console.log("q.data", data);
     return (
         <div className="card mb-3">
             <div className="card-body d-flex flex-column justify-content-center text-center">

@@ -3,8 +3,7 @@ import Select from "react-select";
 import PropTypes from "prop-types";
 
 const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
-    console.log(options);
-    const transformArray = options.map((p) => ({ label: p.name || p.label, value: p.value }));
+    const transformArray = options.map((p) => ({ label: p.name || p.label, value: p._id || p.value }));
     const optionsArray =
         !Array.isArray(transformArray) && typeof options === "object"
             ? Object.keys(options).map((optionName) => ({
@@ -12,7 +11,6 @@ const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
                 value: options[optionName]._id
             }))
             : transformArray;
-    console.log(transformArray);
     const heandleChange = (value) => {
         onChange({ name: name, value });
     };

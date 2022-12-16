@@ -14,21 +14,22 @@ import { useAuth } from "../../../hooks/useAuth";
 
 const UserEditPage = ({ userID }) => {
     const history = useHistory();
+    const { getQuality } = useQuality();
     const { currentUser, updateUserData } = useAuth();
     const { professions } = useProfessions();
     const { qualities } = useQuality();
-    console.log(professions);
-    console.log(qualities);
-    console.log(currentUser);
     // const [qualities, setQualities] = useState({});
     // const [professions, setProfessions] = useState();
     const [userData, setUserData] = useState();
     const [errors, setErrors] = useState({});
-    console.log("userData", userData);
+    const newQ = currentUser.qualities.map((q) => getQuality(q.q));
+    const NewArray = newQ.map((p) => ({ label: p.name || p.label, value: p._id || p.value }));
     useEffect(() => {
-        setUserData(currentUser);
+        setUserData({
+            ...currentUser,
+            qualities: NewArray
+        });
     }, []);
-
     const validatorConfig = {
         name: {
             isRequired: {
@@ -57,7 +58,7 @@ const UserEditPage = ({ userID }) => {
             }));
         }
     };
-
+    console.log(userData);
     const validate = (userData) => {
         // const errors = {};
         // for (const fieldName in data) {
@@ -72,30 +73,24 @@ const UserEditPage = ({ userID }) => {
         return Object.keys(errors).length === 0;
     };
     const isValidData = Object.keys(errors).length === 0;
-
     useEffect(() => {
         validate(userData);
     }, [userData]);
-
     const heandlechangeButton = (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        const professionName = Object.keys(professions).find(
-            (key) => professions[key]._id === userData.profession
-        );
-        const qualitiesList = userData.qualities.map((q) =>
-            Object.values(qualities).find(
-                (qualitie) => q.value === qualitie._id
-            )
-        );
+        console.log("userData.profession", userData.profession);
+        const professionName = professions.find((p) => userData.profession === p.name);
+        console.log("professionName", professionName);
+        const qualitiesList = userData.qualities.map((q) => ({ q: q.value }));
         const data = {
             ...userData,
-            profession: professions[professionName],
+            profession: professionName._id,
             qualities: qualitiesList
         };
-        console.log("data", data);
         updateUserData(data);
+        setUserData(data);
         // API.users.update(userID, data);
         history.push("/users/" + userID);
     };

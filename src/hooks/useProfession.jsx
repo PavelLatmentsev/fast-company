@@ -28,10 +28,6 @@ export const ProfessionProvider = ({ children }) => {
         const { message } = error.response.data;
         setError(message);
     }
-
-    function getProfession(id) {
-        return professions.find((p) => p._id === id);
-    }
     async function getProfessionsList() {
         try {
             const { content } = await professionService.get();
@@ -41,7 +37,9 @@ export const ProfessionProvider = ({ children }) => {
             errorCather(error);
         }
     }
-
+    function getProfession(id) {
+        return professions.find((p) => p._id === id);
+    }
     return (
         <ProfessionContext.Provider
             value={{ isLoading, professions, getProfession }}

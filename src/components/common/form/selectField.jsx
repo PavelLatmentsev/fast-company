@@ -10,7 +10,6 @@ const SelectField = ({
     error,
     name
 }) => {
-    console.log("xsdds", options);
     const getInputClasses = () => {
         return "form-select" + (error ? " is-invalid" : "");
     };

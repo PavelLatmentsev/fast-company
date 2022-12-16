@@ -15,7 +15,7 @@ const UsersPage = ({ userID }) => {
     const { edit } = params;
     const { getUserById } = useUser();
     const userData = getUserById(userID);
-    console.log(userData);
+
     // const [userData, setUser] = useState();
     // useEffect(() => {
     //     API.users.getById(userID).then((data) => {
