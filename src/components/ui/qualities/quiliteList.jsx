@@ -6,7 +6,7 @@ const QuiliteList = ({ qualities }) => {
     const { isLoading } = useQuality();
     if (isLoading) return "Loading...";
     return (<>
-        {qualities.map((qual) => <Quility key={qual.q} id={qual} />)}
+        {qualities.map((qual) => <Quility key={qual} id={qual} />)}
     </>);
 };
 

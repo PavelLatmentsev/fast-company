@@ -99,7 +99,7 @@ const RegistrForm = () => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        const newData = { ...data, qualities: data.qualities.map((q) => ({ q: q.value })) };
+        const newData = { ...data, qualities: data.qualities.map((q) => q.value) };
         try {
             await signUp(newData);
             history.push("/");

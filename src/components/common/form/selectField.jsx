@@ -13,14 +13,11 @@ const SelectField = ({
     const getInputClasses = () => {
         return "form-select" + (error ? " is-invalid" : "");
     };
-    const transformArray = options.map((p) => ({ label: p.name || p.label, value: p.value }));
     const optionsArray =
-        !Array.isArray(transformArray) && typeof options === "object"
-            ? Object.keys(options).map((optionName) => ({
-                name: options[optionName].name,
-                value: options[optionName]._id
-            }))
-            : transformArray;
+        !Array.isArray(options) && typeof options === "object"
+            ? Object.values(options)
+            : options;
+
     const heandleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
@@ -45,7 +42,7 @@ const SelectField = ({
                         optionsArray.map((option) => (
                             <option
                                 value={option.value}
-                                key={option.value + " " + option.label}
+                                key={option.value}
                             >
                                 {option.label}
                             </option>
