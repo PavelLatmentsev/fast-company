@@ -7,14 +7,14 @@ import UserEditPage from "../userEditPage/userEditPage.jsx";
 import QualitiesCard from "../../ui/qualitiesCard";
 import MeteengsCard from "../../ui/meetingsCard.jsx";
 import Comments from "../../ui/comments.jsx";
-import { useUser } from "../../../hooks/useUsers.jsx";
 import { CommentsProvider } from "../../../hooks/useComments.jsx";
+import { useSelector } from "react-redux";
+import { getUsersById } from "../../../store/users.js";
 
 const UsersPage = ({ userID }) => {
     const params = useParams();
     const { edit } = params;
-    const { getUserById } = useUser();
-    const userData = getUserById(userID);
+    const userData = useSelector(getUsersById(userID));
 
     // const [userData, setUser] = useState();
     // useEffect(() => {

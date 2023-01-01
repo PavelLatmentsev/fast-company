@@ -7,14 +7,13 @@ import GroupList from "../../common/groupList";
 import Pagination from "../../common/pagination";
 import SearchStatus from "../../ui/searchStatus";
 import UsersTable from "../../ui/usersTable";
-import { useUser } from "../../../hooks/useUsers";
-import { useAuth } from "../../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { getProfessions, getProfessionsLoadingStatus } from "../../../store/professions";
+import { getCurrentUserId, getUsersList } from "../../../store/users";
 
 const UsersListPage = () => {
-    const { users } = useUser();
-    const { currentUser } = useAuth();
+    const users = useSelector(getUsersList());
+    const currentUserId = useSelector(getCurrentUserId());
     const professions = useSelector(getProfessions());
     const professionLoading = useSelector(getProfessionsLoadingStatus());
     let [count, setCount] = useState(users.length);
@@ -81,7 +80,7 @@ const UsersListPage = () => {
                 : selectedProf
                     ? data.filter((user) => _.isEqual(user?.profession, selectedProf))
                     : data;
-            return filterdUsers.filter((u) => u._id !== currentUser._id);
+            return filterdUsers.filter((u) => u._id !== currentUserId);
         }
         const filterdUsers = filterUsers(users);
         count = filterdUsers.length;

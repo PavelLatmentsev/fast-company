@@ -1,10 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { getIsLoggedIn } from "../../store/users";
 import NavProfile from "./navProfile";
 
 const Navbar = () => {
-    const { currentUser } = useAuth();
+    const isLoggedIn = useSelector(getIsLoggedIn());
     return (
         <nav className="navbar bg-light mb-3n">
             <div className="container-fluid">
@@ -12,14 +13,14 @@ const Navbar = () => {
                     <li className="nav-item">
                         <Link to={"/"} className="nav-link" aria-current="page">Main</Link>
                     </li>
-                    {currentUser && (
+                    {isLoggedIn && (
                         <li className="nav-item">
                             <Link to={"/users"} className="nav-link" aria-current="page">Users</Link>
                         </li>
                     )}
                 </ul>
                 <div className="d-flex">
-                    {currentUser ? <NavProfile /> : (
+                    {isLoggedIn ? <NavProfile /> : (
                         <Link to={"/login"} className="nav-link" aria-current="page">Login</Link>
                     )}
                 </div>

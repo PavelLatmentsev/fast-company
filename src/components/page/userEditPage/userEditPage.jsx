@@ -8,11 +8,11 @@ import MultiSelectField from "../../common/form/multiSelectField";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import BackButton from "../../common/backButton";
-import { useAuth } from "../../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { getQualities, getQualitiesLoadingStatus } from "../../../store/quilities";
 import { getProfessions, getProfessionsLoadingStatus } from "../../../store/professions";
-
+import { getCurrentUserData } from "../../../store/users";
+import { useAuth } from "../../../hooks/useAuth";
 const UserEditPage = ({ userID }) => {
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +20,8 @@ const UserEditPage = ({ userID }) => {
     const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
     const professions = useSelector(getProfessions());
     const professionLoading = useSelector(getProfessionsLoadingStatus());
-    const { currentUser, updateUserData } = useAuth();
+    const currentUser = useSelector(getCurrentUserData());
+    const { updateUserData } = useAuth();
     const qualitiesList = qualities.map((q) => ({ label: q.name, value: q._id }));
     const professionsList = professions.map((p) => ({ label: p.name, value: p._id }));
     // const [qualities, setQualities] = useState({});

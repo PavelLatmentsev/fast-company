@@ -23,6 +23,7 @@ const AuthProvider = ({ children }) => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const history = useHistory();
+
     async function updateUserData(newData) {
         try {
             const { content } = await userService.update(newData);
@@ -33,6 +34,7 @@ const AuthProvider = ({ children }) => {
             setIsLoading(false);
         }
     }
+
     async function singIn({ email, password }) {
         try {
             const { data } = await httpAuth.post(`accounts:signInWithPassword`, { email, password, returnSecureToken: true });

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 // import Users from "./components/users";
 import UsersList from "./layouts/usersList";
 import { Route, Switch } from "react-router-dom";
@@ -9,31 +9,28 @@ import { ToastContainer } from "react-toastify";
 import AuthProvider from "./hooks/useAuth";
 import ProtectedRoute from "./components/common/protectedRoute";
 import LogOut from "./layouts/logOut";
-import { useDispatch } from "react-redux";
-import { loadQualitiesList } from "./store/quilities";
-import { loadProfessionList } from "./store/professions";
+import AppLoader from "./components/ui/hoc/appLoader";
+
 const App = () => {
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(loadProfessionList());
-        dispatch(loadQualitiesList());
-    }, []);
     return (
         <div>
-            <AuthProvider>
-                <Navbar />
+            <AppLoader>
+                <AuthProvider>
+                    <Navbar />
 
-                <Switch>
-                    <Route exact path="/" component={Main} />
-                    <Route path="/login/:type?" component={Login} />
-                    <Route path="/logout" component={LogOut} />
-                    <ProtectedRoute
-                        path="/users/:userID?/:edit?"
-                        component={UsersList}
-                    />
-                </Switch>
-            </AuthProvider>
+                    <Switch>
+                        <Route exact path="/" component={Main} />
+                        <Route path="/login/:type?" component={Login} />
+                        <Route path="/logout" component={LogOut} />
+                        <ProtectedRoute
+                            path="/users/:userID?/:edit?"
+                            component={UsersList}
+                        />
+                    </Switch>
+                </AuthProvider>
+            </AppLoader>
             <ToastContainer />
+
         </div>
     );
 };
