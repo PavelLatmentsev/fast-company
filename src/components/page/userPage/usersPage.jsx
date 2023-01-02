@@ -7,7 +7,6 @@ import UserEditPage from "../userEditPage/userEditPage.jsx";
 import QualitiesCard from "../../ui/qualitiesCard";
 import MeteengsCard from "../../ui/meetingsCard.jsx";
 import Comments from "../../ui/comments.jsx";
-import { CommentsProvider } from "../../../hooks/useComments.jsx";
 import { useSelector } from "react-redux";
 import { getUsersById } from "../../../store/users.js";
 
@@ -15,13 +14,6 @@ const UsersPage = ({ userID }) => {
     const params = useParams();
     const { edit } = params;
     const userData = useSelector(getUsersById(userID));
-
-    // const [userData, setUser] = useState();
-    // useEffect(() => {
-    //     API.users.getById(userID).then((data) => {
-    //         setUser(data);
-    //     });
-    // }, []);
 
     if (userData) {
         return (
@@ -40,9 +32,8 @@ const UsersPage = ({ userID }) => {
                             </div>
 
                             <div className="col-md-8">
-                                <CommentsProvider>
-                                    <Comments />
-                                </CommentsProvider>
+
+                                <Comments />
                             </div>
                         </div>
                     </div>
@@ -63,3 +54,9 @@ UsersPage.propTypes = {
 };
 
 export default UsersPage;
+    // const [userData, setUser] = useState();
+    // useEffect(() => {
+    //     API.users.getById(userID).then((data) => {
+    //         setUser(data);
+    //     });
+    // }, []);

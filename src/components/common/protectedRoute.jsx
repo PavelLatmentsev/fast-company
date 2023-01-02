@@ -5,17 +5,20 @@ import { useSelector } from "react-redux";
 import { getIsLoggedIn } from "../../store/users";
 const ProtectedRoute = ({ component: Component, children, ...rest }) => {
     const isLoggedIn = useSelector(getIsLoggedIn());
+    console.log(isLoggedIn);
     return (<Route {...rest} render={(props) => {
         if (!isLoggedIn) {
-            return <Redirect to={{
+            return (<Redirect to={{
                 pathname: "/login",
                 state: {
                     from: props.location
                 }
-            }} />;
+            }} />);
         }
         return Component ? <Component {...props} /> : children;
-    }} />);
+    }}
+    />
+    );
 };
 ProtectedRoute.propTypes = {
     component: PropTypes.func,

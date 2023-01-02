@@ -6,22 +6,21 @@ import SelectField from "../../common/form/selectField";
 import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
 import BackButton from "../../common/backButton";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getQualities, getQualitiesLoadingStatus } from "../../../store/quilities";
 import { getProfessions, getProfessionsLoadingStatus } from "../../../store/professions";
-import { getCurrentUserData } from "../../../store/users";
-import { useAuth } from "../../../hooks/useAuth";
+import { getCurrentUserData, updateUser } from "../../../store/users";
+
 const UserEditPage = ({ userID }) => {
-    const history = useHistory();
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
     const qualities = useSelector(getQualities());
     const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
     const professions = useSelector(getProfessions());
     const professionLoading = useSelector(getProfessionsLoadingStatus());
     const currentUser = useSelector(getCurrentUserData());
-    const { updateUserData } = useAuth();
+
     const qualitiesList = qualities.map((q) => ({ label: q.name, value: q._id }));
     const professionsList = professions.map((p) => ({ label: p.name, value: p._id }));
     // const [qualities, setQualities] = useState({});
@@ -106,17 +105,17 @@ const UserEditPage = ({ userID }) => {
     useEffect(() => {
         validate(userData);
     }, [userData]);
-
+    console.log(userData);
     const heandleSubmit = async (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        await updateUserData({
+        dispatch(updateUser({
             ...userData,
             qualities: userData.qualities.map((q) => q.value)
-        });
+        }));
+        // await updateUserData();
         // API.users.update(userID, data);
-        history.push(`/users/${currentUser._id}`);
     };
 
     if (userData) {

@@ -3,12 +3,12 @@ import TextField from "../common/form/textField";
 import { validator } from "../../utils/validator";
 import CheckBoxField from "../common/form/checkBoxField";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { login } from "../../store/users";
+import { useDispatch, useSelector } from "react-redux";
+import { getAuthError, login } from "../../store/users";
 const LoginForm = () => {
+    const loginError = useSelector(getAuthError());
     const history = useHistory();
     const dispatch = useDispatch();
-    const [enterError, setEnterError] = useState(null);
 
     const validatorConfig = {
         email: {
@@ -23,25 +23,15 @@ const LoginForm = () => {
         }
     };
     const [data, setData] = useState({ email: "", password: "", stayOn: false });
-    // const heandleChange = ({ target }) => {
-    //     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
-    // };
     const heandleChange = (target) => {
         if (target) {
             setData((prevState) => ({ ...prevState, [target.name]: target.value }));
-            setEnterError(null);
         }
     };
 
     const [errors, setErrors] = useState({});
     const validate = () => {
         const errors = validator(data, validatorConfig);
-        // const errors = {};
-        // for (const fieldName in data) {
-        //     if (data[fieldName].trim() === "") {
-        //         errors[fieldName] = `${fieldName} обязательно для заполнения`;
-        //     }
-        // }
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
@@ -55,7 +45,10 @@ const LoginForm = () => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        const redirect = history.location.state ? history.location.state.from.pathname : "/";
+        const redirect = history.location.state
+            ? history.location.state.from.pathname
+            : "/";
+
         dispatch(login({ payload: data, redirect }));
     };
 
@@ -78,10 +71,10 @@ const LoginForm = () => {
                 error={errors.password}
             />
             <CheckBoxField value={data.stayOn} onChange={heandleChange} name="stayOn"><>Оставаться в системе</></CheckBoxField>
-            {enterError && <p className="text-danger">{enterError}</p>}
+            {loginError && <p className="text-danger">{loginError}</p>}
             <button
                 type="submit"
-                disabled={!isValidData || enterError}
+                disabled={!isValidData}
                 className="btn btn-primary w-100 mx-auto"
             >
                 Отправить

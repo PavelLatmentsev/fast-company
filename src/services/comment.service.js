@@ -7,11 +7,11 @@ const commentService = {
         const { data } = await httpService.put(commentEndpoint + payload._id, payload);
         return data;
     },
-    getComment: async (pageId) => {
+    getComment: async (pageID) => {
         const { data } = await httpService.get(commentEndpoint, {
             params: {
                 orderBy: `"pageId"`,
-                equalTo: `"${pageId}"`
+                equalTo: `"${pageID}"`
             }
         });
         return data;
