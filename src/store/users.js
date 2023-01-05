@@ -93,11 +93,11 @@ export const updateUser = (payload) => async (dispatch) => {
 export const login = ({ payload, redirect }) => async (dispatch) => {
     const { email, password } = payload;
     dispatch(authRequested());
-
     try {
         const data = await authService.login({ email, password });
         dispatch(authRequestedSuccess({ userId: data.localId }));
         localStorageService.setTokens(data);
+        history.push(redirect);
     } catch (error) {
         const { code, message } = error.response.data.error;
         if (code === 400) {
