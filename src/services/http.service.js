@@ -16,7 +16,7 @@ http.interceptors.request.use(
                 (containSlash ? config.url.slice(0, -1) : config.url) + ".json";
             const expireseDate = localStorageService.getTokenExpriceDate();
             const refreshToken = localStorageService.getRefreshToken();
-            if (refreshToken && expireseDate > Date.now()) {
+            if (refreshToken && expireseDate < Date.now()) {
                 const data = await authService.refresh();
                 localStorageService.setTokens({
                     refreshToken: data.refresh_token,

@@ -4,14 +4,14 @@ import userService from "../services/user.service";
 import { generateAuthError } from "../utils/generateAuthError";
 import getRandomInt from "../utils/getRandomInt";
 import history from "../utils/history";
-
 const { createSlice, createAction } = require("@reduxjs/toolkit");
+
 const initialState = localStorageService.getAccesToken() ? {
     entities: null,
     isLoading: true,
     error: null,
     auth: { userId: localStorageService.getUserId() },
-    isLoggedIn: false,
+    isLoggedIn: true,
     dataLoaded: false
 
 } : {
